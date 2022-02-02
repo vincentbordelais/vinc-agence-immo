@@ -1,0 +1,42 @@
+{% extends "base.html.twig" %}
+
+{% block title %}Gérer les biens
+{% endblock %}
+
+{% block body %}
+	<div class="jumbotron text-center">
+		<h1>Admin, gérer les biens</h1>
+		{% for message in app.flashes('success') %}
+			<div class="alert alert-success">
+				{{ message }}
+			</div>
+		{% endfor %}
+		<table class="table table-striped">
+			<thead>
+				<tr>
+					<th>Titre</th>
+					<th>Actions</th>
+					<th></th>
+				</tr>
+			</thead>
+			<tbody>
+				{% for property in properties %}
+					<tr>
+						<td>{{ property.title }}</td>
+						<td>
+							<a href="{{ path("adminProperty_edit", {id: property.id})}}" class="btn btn-secondary">Editer</a>
+						</td>
+						<td>
+							<a href="{{ path("adminProperty_delete", {id: property.id})}}" class="btn btn-sm btn-danger" onclick="return confirm('Êtes-vous sûr?')">
+								<i class="fas fa-trash"></i>
+							</a>
+						</td>
+					</tr>
+				{% endfor %}
+			</tbody>
+		</table>
+		<div class="text-right">
+			<a href="{{ path("adminProperty_create")}}" class="btn btn-primary">Créer un nouveau bien</a>
+		</div>
+	</div>
+{% endblock %}
