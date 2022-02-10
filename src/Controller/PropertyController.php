@@ -5,8 +5,10 @@ namespace App\Controller;
 use App\Entity\Property;
 use App\Repository\PropertyRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Request;
 
 class PropertyController extends AbstractController
 {
@@ -22,7 +24,7 @@ class PropertyController extends AbstractController
      * @Route("/biens", name="property_index")
      * Affiche tous mes biens
      */
-    public function index()
+    public function index(PaginatorInterface $paginator, Request $request)
     {
         // $property = new Property();
         // $property
@@ -47,9 +49,18 @@ class PropertyController extends AbstractController
         // $property[0]->setSold(true);
         // $this->em->flush($property);
         // dd($property);
+        // Mais va utiliser les fixtures :
+        // $properties = $this->propertyRepository->findAllVisibleQuery();
 
+        $properties = $paginator->paginate(
+            $this->propertyRepository->findAllVisibleQuery(), /* query NOT result */
+            $request->query->getInt('page', 1), /*page number*/
+            12 /*limit per page*/
+        );
 
-        return $this->render("property/biens.html.twig");
+        return $this->render("property/index.html.twig", [
+            'properties' => $properties
+        ]);
     }
 
     /**

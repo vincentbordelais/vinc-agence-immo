@@ -1,0 +1,15 @@
+{% extends "base.html.twig" %}
+{% block title %}Tous les biens
+{% endblock %}
+{% block body %}
+	<div class="container mt-4">
+		<h1>Tous les biens</h1>
+	</div>
+	<div class="container">
+		{% include "property/_property_card.html.twig" %}
+		{# display navigation : #}
+		<div class="navigation">
+			{{ knp_pagination_render(properties) }}
+		</div>
+	</div>
+{% endblock %}
